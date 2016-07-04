@@ -7,7 +7,7 @@ module USCISStatus
 
   class USCISWebScraping
     CURRENT_CASE = "Your Current Case Status for"
-    cert_file = "Symantec Class 3 Secure Server CA - G4.crt"
+    CERT_FILE = "Symantec Class 3 Secure Server CA - G4.crt"
 
     File.write(cert_file, open("https://symantec.tbs-certificats.com/SymantecSSG4.crt", &:read))
 
@@ -20,7 +20,7 @@ module USCISStatus
       applications.each do |number|
         next if number.nil? or number.empty?
 
-        mechanize = Mechanize.new{|a| a.ca_file = cert_file}
+        mechanize = Mechanize.new{|a| a.ca_file = CERT_FILE }
         page = mechanize.post("https://egov.uscis.gov/cris/Dashboard/CaseStatus.do", { "appReceiptNum" => number })
 
         # Look for possible errors with this application number
