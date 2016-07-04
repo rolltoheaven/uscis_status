@@ -9,7 +9,7 @@ module USCISStatus
     CURRENT_CASE = "Your Current Case Status for"
     CERT_FILE = "Symantec Class 3 Secure Server CA - G4.crt"
 
-    File.write(cert_file, open("https://symantec.tbs-certificats.com/SymantecSSG4.crt", &:read))
+    File.write(CERT_FILE, open("https://symantec.tbs-certificats.com/SymantecSSG4.crt", &:read))
 
     def self.check(application_numbers)
       # Check if the parameter is an Array, otherwise create one
