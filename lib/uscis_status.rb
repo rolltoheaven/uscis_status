@@ -20,7 +20,7 @@ module USCISStatus
       applications.each do |number|
         next if number.nil? or number.empty?
 
-        mechanize = Mechanize.new{|a| a.ca_file = cert_fileE}
+        mechanize = Mechanize.new{|a| a.ca_file = cert_file}
         page = mechanize.post("https://egov.uscis.gov/cris/Dashboard/CaseStatus.do", { "appReceiptNum" => number })
 
         # Look for possible errors with this application number
