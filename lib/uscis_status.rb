@@ -24,7 +24,7 @@ module USCISStatus
         page = mechanize.post("https://egov.uscis.gov/casestatus/mycasestatus.do", { "appReceiptNum" => number })
 
         # Look for possible errors with this application number
-        error = page.search('.//div[@class="errorContainer"]/ul')
+        error = page.search('.formErrorMessages ul')
         if !error.empty?
           statuses << {number: number, type: 'NONE', status: error.text.strip, description: '', general_description: '', complete: ''}
           next
