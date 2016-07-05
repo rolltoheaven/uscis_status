@@ -21,7 +21,7 @@ module USCISStatus
         next if number.nil? or number.empty?
 
         mechanize = Mechanize.new{|a| a.ca_file = CERT_FILE }
-        page = mechanize.post("https://egov.uscis.gov/cris/Dashboard/CaseStatus.do", { "appReceiptNum" => number })
+        page = mechanize.post("https://egov.uscis.gov/casestatus/mycasestatus.do", { "appReceiptNum" => number })
 
         # Look for possible errors with this application number
         error = page.search('.//div[@class="errorContainer"]/ul')
