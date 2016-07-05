@@ -43,10 +43,10 @@ module USCISStatus
         complete = "true"
 
         # Get the Status
-        status = current_application.search('.rows.text-center h1').text.strip
+        status = page.search('.rows.text-center h1').text.strip
 
         # Get the Description
-        description = current_application.search('.//p').text.strip
+        description = page.search('.rows.text-center p').text.strip
 
         # Get the General Description for the Application
         #general_description = current_application.search('.//div[@id="bucketDesc"]').text.strip
