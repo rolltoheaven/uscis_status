@@ -35,7 +35,7 @@ module USCISStatus
         application_type = 'I-486'
 
         # Get current application block
-        current_application = page.search('.//div[@class="text-center"]')
+        current_application = page.search('.rows.text-center p')
 
         # Verify if it's in the final step a.k.a 'Complete'
         #steps = page.search('.//table[@id="buckets"]/tr/td')
@@ -43,7 +43,7 @@ module USCISStatus
         complete = "true"
 
         # Get the Status
-        status = current_application.search('.//h1').text.strip
+        status = current_application.search('.rows.text-center h1').text.strip
 
         # Get the Description
         description = current_application.search('.//p').text.strip
