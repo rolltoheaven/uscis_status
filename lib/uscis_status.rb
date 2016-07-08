@@ -26,21 +26,20 @@ module USCISStatus
         # Look for possible errors with this application number
         error = page.search('.formErrorMessages ul')
         if !error.empty?
-          statuses << {number: number, type: 'NONE', status: error.text.strip, description: '', general_description: '', complete: ''}
+          statuses << {number: number, type: 'NONE', status: error.text.strip, description: ''}
           next
         end
 
+        # Get current application block
+        current_application = page.search('.rows.text-center')
+
         # Get the application type and description (eg. Form I130...)
         #application_type = capitalize_words(page.search('.//div[@id="caseStatus"]/h3').text.gsub(CURRENT_CASE, ""))
-        application_type = 'I-486'
-
-        # Get current application block
-        current_application = page.search('.rows.text-center p')
+        application_type = current_application.match(/[a-zA-Z]-\d+/)[1]
 
         # Verify if it's in the final step a.k.a 'Complete'
         #steps = page.search('.//table[@id="buckets"]/tr/td')
         #complete = steps[steps.count - 1]["class"] == "current" ? "true" : "false"
-        complete = "true"
 
         # Get the Status
         status = page.search('.rows.text-center h1').text.strip
@@ -50,9 +49,8 @@ module USCISStatus
 
         # Get the General Description for the Application
         #general_description = current_application.search('.//div[@id="bucketDesc"]').text.strip
-        general_description = 'Nothing'
 
-        statuses << {number: number, type: application_type, status: status, description: description, general_description: general_description, complete: complete}
+        statuses << {number: number, type: application_type, status: status, description: description}
 
       end
 
