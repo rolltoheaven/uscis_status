@@ -42,9 +42,15 @@ module USCISStatus
         full_description = current_application.search('.rows.text-center p').text.strip
 
         # Get the application type and description (eg. Form I130...)
-        application_type = full_description.match(TYPE_REGEX)[1]
+        if full_description =~ TYPE_REGEX
+          application_type = full_description.match(TYPE_REGEX)[1]
+        else
+          application_type = ''
 
-        date = full_description.match(DATE_REGEX)[1]
+        if full_description =~ DATE_REGEX
+          date = full_description.match(DATE_REGEX)[1]
+        else
+          date = ''
 
         #steps = page.search('.//table[@id="buckets"]/tr/td')
         if description.include?('Approved') || description.include?('Card Was Mailed')
