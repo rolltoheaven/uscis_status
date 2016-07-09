@@ -51,6 +51,7 @@ module USCISStatus
           date = full_description.match(DATE_REGEX)[1]
         else
           date = ''
+        end
 
         #steps = page.search('.//table[@id="buckets"]/tr/td')
         if description.include?('Approved') || description.include?('Card Was Mailed')
@@ -87,5 +88,4 @@ module USCISStatus
     return USCISWebScraping.check(application_numbers)
 
   end
-
 end
