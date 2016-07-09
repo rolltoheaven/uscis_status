@@ -46,6 +46,7 @@ module USCISStatus
           application_type = full_description.match(TYPE_REGEX)[1]
         else
           application_type = ''
+        end
 
         if full_description =~ DATE_REGEX
           date = full_description.match(DATE_REGEX)[1]
