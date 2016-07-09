@@ -8,6 +8,8 @@ module USCISStatus
   class USCISWebScraping
     CURRENT_CASE = "Your Current Case Status for"
     CERT_FILE = "Symantec Class 3 Secure Server CA - G4.crt"
+    DATE_REGEX = /[\w]+\s\d{1,2},\s\d{4}/i
+    TYPE_REGEX = /[a-zA-Z]-\d+/
 
     File.write(CERT_FILE, open("https://symantec.tbs-certificats.com/SymantecSSG4.crt", &:read))
 
@@ -30,27 +32,35 @@ module USCISStatus
           next
         end
 
-        # Get current application block
+        # Get current application description block
         current_application = page.search('.rows.text-center')
 
-        # Get the application type and description (eg. Form I130...)
-        #application_type = capitalize_words(page.search('.//div[@id="caseStatus"]/h3').text.gsub(CURRENT_CASE, ""))
-        application_type = current_application.match(/[a-zA-Z]-\d+/)[1]
-
-        # Verify if it's in the final step a.k.a 'Complete'
-        #steps = page.search('.//table[@id="buckets"]/tr/td')
-        #complete = steps[steps.count - 1]["class"] == "current" ? "true" : "false"
-
-        # Get the Status
-        status = page.search('.rows.text-center h1').text.strip
+        # Get the heading
+        description = current_application.search('.rows.text-center h1').text.strip
 
         # Get the Description
-        description = page.search('.rows.text-center p').text.strip
+        full_description = current_application.search('.rows.text-center p').text.strip
+
+        # Get the application type and description (eg. Form I130...)
+        application_type = full_description.match(TYPE_REGEX)[1]
+
+        date = full_description.match(DATE_REGEX)[1]
+
+        #steps = page.search('.//table[@id="buckets"]/tr/td')
+        if description.include?('Approved') || description.include?('Card Was Mailed')
+          status = "Approved"
+          approved_date = date 
+        else
+          status = 'Pending'
+          receipt_date = date
+        end
+
 
         # Get the General Description for the Application
         #general_description = current_application.search('.//div[@id="bucketDesc"]').text.strip
 
-        statuses << {number: number, type: application_type, status: status, description: description}
+        statuses << {number: number, type: application_type, status: status, approved_date: approved_date, 
+                    receipt_date: receipt_date, description: description, full_description: full_description}
 
       end
 
