@@ -21,6 +21,7 @@ module USCISStatus
 
       applications.each do |number|
         next if number.nil? or number.empty?
+        number = number.upcase
 
         mechanize = Mechanize.new{|a| a.ca_file = CERT_FILE }
         page = mechanize.post("https://egov.uscis.gov/casestatus/mycasestatus.do", { "appReceiptNum" => number })
@@ -59,8 +60,10 @@ module USCISStatus
           status = "Approved"
           approved_date = date 
         else
-          status = 'Pending'
-          receipt_date = date
+          status = 'In Process'
+          if full_description.include?('Received')
+            receipt_date = date
+          end
         end
 
 
