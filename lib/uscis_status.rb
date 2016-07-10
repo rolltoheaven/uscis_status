@@ -55,7 +55,7 @@ module USCISStatus
         end
 
         #steps = page.search('.//table[@id="buckets"]/tr/td')
-        if description.include?('Approved') || description.include?('Card Was Mailed')
+        if description.include?('Approved') or description.include?('Card Was')
           status = "Approved"
           approved_date = date 
         else
