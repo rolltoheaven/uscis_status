@@ -43,13 +43,13 @@ module USCISStatus
 
         # Get the application type and description (eg. Form I130...)
         if full_description =~ TYPE_REGEX
-          application_type = full_description.match(TYPE_REGEX)[1]
+          application_type = full_description.match(TYPE_REGEX)[0]
         else
           application_type = ''
         end
 
         if full_description =~ DATE_REGEX
-          date = full_description.match(DATE_REGEX)[1]
+          date = full_description.match(DATE_REGEX)[0]
         else
           date = ''
         end
